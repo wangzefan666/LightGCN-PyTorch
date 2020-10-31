@@ -28,20 +28,15 @@ see more in `dataloader.py`
 
 ## An example to run a 3-layer LightGCN
 
-run LightGCN on **Gowalla** dataset:
+1. Change `ROOT_PATH` in `code/world.py`
 
-* change base directory
-
-Change `ROOT_PATH` in `code/world.py`
-
-* command
+2. Run LightGCN on *Gowalla* dataset:
 
 ```
-python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset="lastfm" --topks="[20]" --recdim=64
+python main.py --dataset gowalla --bpr_batch 2048 --testbatch 100 --multicore 1
 ```
 
 * log output
-
 ```shell
 ...
 ======================
@@ -61,7 +56,6 @@ BPR[sample time][16.9=16.60+0.45]
 ```
 
 *NOTE*:
-
 1. Even though we offer the code to split user-item matrix for matrix multiplication, we strongly suggest you don't enable it since it will extremely slow down the training speed.
 2. If you feel the test process is slow, try to increase the ` testbatch` and enable `multicore`(Windows system may encounter problems with `multicore` option enabled)
 3. Use `tensorboard` option, it's good.
@@ -77,15 +71,9 @@ BPR[sample time][16.9=16.60+0.45]
 ## Results
 *all metrics is under top-20*
 
-***tensorflow* version results**:
+*tensorflow* version results:
 ![](./imgs/tf.jpg)
 
-***pytorch* version results** (stop at 1000 epochs):
-
-(*for seed=2020*)
-
+*pytorch* version results:
 ![](./imgs/torch.png)
-
-
-For those who want the well-trained models, please e-mail me ( `gusye AT mail.ustc.edu.cn`)
 
