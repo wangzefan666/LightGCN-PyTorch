@@ -159,10 +159,11 @@ class LightGCN(BasicModel):
             else:
                 all_emb = torch.sparse.mm(g_droped, all_emb)
             embs.append(all_emb)
-        embs = torch.stack(embs, dim=1)
-        light_out = torch.mean(embs, dim=1)
+        # out = torch.cat(embs, dim=1)  # (n_nodes, embed_len*(n_layers+1))
+        out = torch.stack(embs, dim=1)  # (n_nodes, n_layers+1, embed_len)
+        out = torch.mean(out, dim=1)
 
-        users, items = torch.split(light_out, [self.num_users, self.num_items])
+        users, items = torch.split(out, [self.num_users, self.num_items])
         return users, items
 
     def getUsersRating(self, users):

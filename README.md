@@ -33,7 +33,7 @@ see more in `dataloader.py`
 2. Run LightGCN on *Gowalla* dataset:
 
 ```
-python main.py --dataset gowalla --bpr_batch 2048 --testbatch 100 --multicore 1
+python main.py --dataset gowalla --bpr_batch 2048 --testbatch 200 --multicore 1
 ```
 
 * log output

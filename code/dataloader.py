@@ -281,17 +281,13 @@ class Loader(BasicDataset):
         self.testItem = np.array(testItem)
 
         self.Graph = None
-        print(f"{self.trainDataSize} interactions, {len(trainUniqueUsers)} users, {len(set(trainItem))} for training")
-        print(f"{self.testDataSize} interactions, {len(testUniqueUsers)} users, {len(set(testItem))} for testing")
+        print(f"{self.trainDataSize} interactions, {len(trainUniqueUsers)} users, {len(set(trainItem))} items for training")
+        print(f"{self.testDataSize} interactions, {len(testUniqueUsers)} users, {len(set(testItem))} items for testing")
+        print(f"train item list contains all the item in test list: {set(trainItem)>=set(testItem)}")
         print(f"{world.dataset} Sparsity : {(self.trainDataSize + self.testDataSize) / self.n_users / self.m_items}")
 
         # (users,items), bipartite graph
-        self.UserItemNet = csr_matrix((np.ones(len(self.trainUser)), (self.trainUser, self.trainItem)),
-                                      shape=(self.n_user, self.m_item))
-        self.users_D = np.array(self.UserItemNet.sum(axis=1)).squeeze()
-        self.users_D[self.users_D == 0.] = 1
-        self.items_D = np.array(self.UserItemNet.sum(axis=0)).squeeze()
-        self.items_D[self.items_D == 0.] = 1.
+        self.UserItemNet = csr_matrix((np.ones(len(self.trainUser)), (self.trainUser, self.trainItem)), shape=(self.n_user, self.m_item))
         # pre-calculate
         self._allPos = self.getUserPosItems(list(range(self.n_user)))
         self.__testDict = self.__build_test()
@@ -366,8 +362,7 @@ class Loader(BasicDataset):
                 end = time()
                 print(f"costing {end - s}s, saved norm_mat...")
                 sp.save_npz(self.path + '/s_pre_adj_mat.npz', norm_adj)
-
-            if self.split == True:
+            if self.split:
                 self.Graph = self._split_A_hat(norm_adj)
                 print("done split matrix")
             else:
