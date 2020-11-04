@@ -40,7 +40,7 @@ class BPRLoss:
         return loss.cpu().item()
 
 
-def UniformSample_original(users, dataset: BasicDataset):
+def UniformSample_original(dataset: BasicDataset):
     """
     the original impliment of BPR Sampling in LightGCN
     output:
